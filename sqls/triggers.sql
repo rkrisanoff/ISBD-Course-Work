@@ -30,7 +30,7 @@ begin
 	)
 	RETURN 0;
 end;
-$$
+$$;
 
 CREATE TRIGGER task_update
 	AFTER UPDATE OF state ON task
