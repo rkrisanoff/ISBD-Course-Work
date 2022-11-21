@@ -1,0 +1,14 @@
+INSERT INTO positronic_brain (release_series,name,speed,cost) VALUES (109,'L2B8D',67,810);
+INSERT INTO body (release_series,name,max_hit_points,cost) VALUES (458,'TOLYAN',18470,987);
+INSERT INTO eyes_sensors (release_series,name,distance,cost) VALUES (500,'DIMON',19265,864);
+INSERT INTO department (id,extracted_bor_quantity,current_resource) VALUES (535,13092,2662);
+INSERT INTO employee (id,name,age,gender) VALUES (159,'Thomas',38,'male');
+INSERT INTO asteroid (id,name,distance) VALUES (159,'Juno',19165);
+INSERT INTO deposit (id,asteroid_id,bor_quantity) VALUES (67,159,66);
+INSERT INTO robot (id,brain_series,operator_id,body_series,eye_series,hit_points,asteroid_id) VALUES (123,109,159,458,500,6456,159);
+INSERT INTO microreactor_type (id,name,cost,b2_h6_consumption_rate,b5_h12_consumption_rate,b10_h14_consumption_rate,b12_h12_consumption_rate) VALUES (732,'MK6',3323,3580,19336,13965,4757);
+INSERT INTO spaceship (id,department_id,income,b2_h6_quantity,b5_h12_quantity,b10_h14_quantity,b12_h12_quantity) VALUES (88,535,8107,15625,212,17636,16990);
+INSERT INTO microreactor_in_spaceship (microreactor_type_id,spaceship_id,deploy_date) VALUES (732,88,'2021-02-13');
+INSERT INTO role (id,name,salary,can_operate_robot) VALUES (403,'manager',15889,TRUE);
+INSERT INTO post (id,employee_id,role_id,department_id,premium) VALUES (648,159,403,535,719);
+INSERT INTO task (id,description,state,creator_post_id,executor_post_id,cost) VALUES (659,'Принимая во внимание показатели успешности, повышение уровня гражданского сознания не оставляет шанса для позиций, занимаемых участниками в отношении поставленных задач.','in work',648,648,735);

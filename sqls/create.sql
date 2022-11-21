@@ -1,4 +1,4 @@
-CREATE TABLE "Robot" (
+CREATE TABLE "robot" (
   "id" serial UNIQUE PRIMARY KEY,
   "brain_series" integer,
   "operator_id" integer,
@@ -104,15 +104,15 @@ CREATE TABLE "department" (
   "current_resource" integer NOT NULL
 );
 
-ALTER TABLE "Robot" ADD FOREIGN KEY ("brain_series") REFERENCES "positronic_brain" ("release_series");
+ALTER TABLE "robot" ADD FOREIGN KEY ("brain_series") REFERENCES "positronic_brain" ("release_series");
 
-ALTER TABLE "Robot" ADD FOREIGN KEY ("operator_id") REFERENCES "employee" ("id");
+ALTER TABLE "robot" ADD FOREIGN KEY ("operator_id") REFERENCES "employee" ("id");
 
-ALTER TABLE "Robot" ADD FOREIGN KEY ("body_series") REFERENCES "body" ("release_series");
+ALTER TABLE "robot" ADD FOREIGN KEY ("body_series") REFERENCES "body" ("release_series");
 
-ALTER TABLE "Robot" ADD FOREIGN KEY ("eye_series") REFERENCES "eyes_sensors" ("release_series");
+ALTER TABLE "robot" ADD FOREIGN KEY ("eye_series") REFERENCES "eyes_sensors" ("release_series");
 
-ALTER TABLE "Robot" ADD FOREIGN KEY ("asteroid_id") REFERENCES "asteroid" ("id");
+ALTER TABLE "robot" ADD FOREIGN KEY ("asteroid_id") REFERENCES "asteroid" ("id");
 
 ALTER TABLE "task" ADD FOREIGN KEY ("creator_post_id") REFERENCES "post" ("id");
 

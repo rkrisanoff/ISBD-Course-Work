@@ -1,4 +1,4 @@
-DROP TABLE "Robot" CASCADE;
+DROP TABLE "robot" CASCADE;
 DROP TABLE "positronic_brain" CASCADE;
 DROP TABLE "body" CASCADE;
 DROP TABLE "eyes_sensors" CASCADE;
