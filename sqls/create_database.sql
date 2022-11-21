@@ -1,5 +1,5 @@
 CREATE TABLE "Robot" (
-  "id" serial PRIMARY KEY,
+  "id" serial UNIQUE PRIMARY KEY,
   "brain_series" integer,
   "operator_id" integer,
   "body_series" integer,
@@ -9,28 +9,28 @@ CREATE TABLE "Robot" (
 );
 
 CREATE TABLE "positronic_brain" (
-  "release_series" serial,
+  "release_series" serial UNIQUE,
   "name" varchar(255) NOT NULL,
   "speed" int NOT NULL,
   "cost" int NOT NULL
 );
 
 CREATE TABLE "body" (
-  "release_series" serial,
+  "release_series" serial UNIQUE,
   "name" varchar(255),
   "max_hit_points" integer,
   "cost" int NOT NULL
 );
 
 CREATE TABLE "eyes_sensors" (
-  "release_series" serial,
+  "release_series" serial UNIQUE,
   "name" varchar(255),
   "distance" int,
   "cost" int NOT NULL
 );
 
 CREATE TABLE "task" (
-  "id" serial,
+  "id" serial UNIQUE,
   "description" varchar(1023),
   "state" varchar(255),
   "creator_post_id" integer,
@@ -39,33 +39,33 @@ CREATE TABLE "task" (
 );
 
 CREATE TABLE "role" (
-  "id" serial,
+  "id" serial UNIQUE,
   "name" varchar(255) NOT NULL,
   "salary" int NOT NULL,
   "can_operate_robot" boolean NOT NULL
 );
 
 CREATE TABLE "employee" (
-  "id" serial,
+  "id" serial UNIQUE,
   "name" varchar(255),
   "age" integer,
   "gender" varchar(6)
 );
 
 CREATE TABLE "asteroid" (
-  "id" serial,
+  "id" serial UNIQUE,
   "name" varchar(255),
   "distance" integer
 );
 
 CREATE TABLE "deposit" (
-  "id" serial,
+  "id" serial UNIQUE,
   "asteroid_id" integer,
   "bor_quantity" integer NOT NULL
 );
 
 CREATE TABLE "microreactor_type" (
-  "id" serial,
+  "id" serial UNIQUE,
   "name" varchar(255) NOT NULL,
   "b2_h6_consumption_rate" integer NOT NULL,
   "b5_h12_consumption_rate" integer NOT NULL,
@@ -81,7 +81,7 @@ CREATE TABLE "microreactor_in_spaceship" (
 );
 
 CREATE TABLE "spaceship" (
-  "id" serial,
+  "id" serial UNIQUE,
   "b2_h6_quantity" integer NOT NULL,
   "b5_h12_quantity" integer NOT NULL,
   "b10_h14_quantity" integer NOT NULL,
@@ -91,7 +91,7 @@ CREATE TABLE "spaceship" (
 );
 
 CREATE TABLE "post" (
-  "id" serial,
+  "id" serial UNIQUE,
   "employee_id" integer,
   "role_id" integer,
   "department_id" integer,
@@ -99,7 +99,7 @@ CREATE TABLE "post" (
 );
 
 CREATE TABLE "department" (
-  "id" serial,
+  "id" serial UNIQUE,
   "extracted_bor_quantity" integer NOT NULL,
   "current_resource" integer NOT NULL
 );
