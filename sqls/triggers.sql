@@ -1,4 +1,4 @@
-CREATE FUNCTION update_department_resource(task_id integer) RETURNS integer
+CREATE OR REPLACE FUNCTION update_department_resource(task_id integer) RETURNS integer
 LANGUAGE
 plpgsql
 AS
