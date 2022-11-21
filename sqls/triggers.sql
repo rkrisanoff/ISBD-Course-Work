@@ -10,6 +10,7 @@ begin
 	current_resource = cost
 	WHERE
 	department.id = department_id;
+	RETURN 0;
 end;
 $$
 
