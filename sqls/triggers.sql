@@ -27,7 +27,8 @@ begin
 		task
 		JOIN post ON task.executor_id = post.employee_id and task.id = task_id
 		JOIN department ON post.department.id = post.department_id
-	)
+	);
+
 	RETURN 0;
 end;
 $$;
