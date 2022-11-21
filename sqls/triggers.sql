@@ -36,5 +36,5 @@ $$;
 CREATE TRIGGER task_update
 	AFTER UPDATE OF state ON task
 	FOR EACH ROW
-	WHEN (NEW.state = "complete")
+	WHEN (NEW.state = 'complete')
 	EXECUTE FUNCTION update_department_resource(task.id);
