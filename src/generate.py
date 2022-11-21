@@ -6,6 +6,7 @@ import entities
 ef = EntityFactory({})
 
 entities = {
+    "post":entities.post,
     "positronic_brain": entities.positronic_brain, 
     "body": entities.body,
     "eyes_sensors":entities.eyes_sensors,
@@ -18,7 +19,6 @@ entities = {
     "spaceship": entities.spaceship,
     "microreactor_in_spaceship": entities.microreactor_in_spaceship,
     "role":entities.role,
-    "post":entities.post,
     "task":entities.task,
 }
 numbers = {
@@ -37,7 +37,4 @@ numbers = {
     "post":20,
     "task":10,
 }
-# numbers = {}.fromkeys(entities.keys())
-# for key in numbers.keys():
-#     numbers[key] = 1
 print(ef.generateSqlRequests(entities, numbers))

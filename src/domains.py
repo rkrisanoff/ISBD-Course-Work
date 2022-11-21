@@ -2,7 +2,7 @@ from enum import Enum
 import random as rnd
 
 
-NamesDomain = [
+Names = [
     'Harry',
     'Oliver',
     'Jack',
@@ -14,7 +14,7 @@ NamesDomain = [
     'William',
     'James'
 ]
-GenderDomain = ['male', 'female']
+Gender = ['male', 'female']
 
 PositronicBrain = [
     "LYNN", "L2B8D"
@@ -43,8 +43,8 @@ TaskStates = [
         ]
  
 
-AsteroidDomain = ["Ceres","Pallas","Juno","Vesta","Astraea","Hebe","Iris","Flora","Metis"]
-MicroreactorDomain = ['MK1','MK2','MK3','MK4','MK5','MK6']
+Asteroid = ["Ceres","Pallas","Juno","Vesta","Astraea","Hebe","Iris","Flora","Metis"]
+Microreactor = ['MK1','MK2','MK3','MK4','MK5','MK6']
 RoleNames = [
         "manager",
         "operator"
@@ -56,16 +56,16 @@ class Domain(Enum):
     def EYES_SENSORS(): return rnd.choice(EyesSensors)
     def BODY(): return rnd.choice(Body)
     def DESCRIPTIONS(): return rnd.choice(Descriptions)
-    def GENDER(): return rnd.choice(GenderDomain)
-    def NAME(): return rnd.choice(NamesDomain)
+    def GENDER(): return rnd.choice(Gender)
+    def NAME(): return rnd.choice(Names)
     def AGE(): return rnd.randint(18, 60)
     def FLAG(): return rnd.random() >= 0.5
     def INDEX(): return rnd.randint(1, 1000)
     def NONEGATIVE_INTEGER(): return rnd.randint(0, 20000)
     def NATURAL(): return rnd.randint(1, 1000)
     def POSITRONIC_BRAIN(): return rnd.choice(PositronicBrain)
-    def ASTEROID():return rnd.choice(AsteroidDomain)
-    def MICROREACTOR():return rnd.choice(MicroreactorDomain)
+    def ASTEROID():return rnd.choice(Asteroid)
+    def MICROREACTOR():return rnd.choice(Microreactor)
     def ROLE_NAMES():return rnd.choice(RoleNames)
     def BOOLEAN(): return rnd.random() >= 0.5
     def DATE_INSTALL():return rnd.choice(DateInstalling)
