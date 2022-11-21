@@ -3,7 +3,7 @@
 from genModel import EntityFactory
 import entities
 
-ef = EntityFactory({"schema": "s284712"})
+ef = EntityFactory({})
 
 entities = {
     "positronic_brain": entities.positronic_brain, 
@@ -37,4 +37,7 @@ numbers = {
     "post":20,
     "task":10,
 }
+# numbers = {}.fromkeys(entities.keys())
+# for key in numbers.keys():
+#     numbers[key] = 1
 print(ef.generateSqlRequests(entities, numbers))

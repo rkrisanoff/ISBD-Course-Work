@@ -27,6 +27,10 @@ class FieldType(FieldTypeDefinition, Enum):
         name="BOOLEAN",
         toSql=lambda value: "TRUE" if value else "NOT"
     )
+    TIMESTAMP = FieldTypeDefinition(
+        name="TIMESTAMP",
+        toSql=lambda value: str("'"+value+"'")
+    )
 
 
 class ForeignKeyReference:
@@ -102,7 +106,7 @@ class EntityFactory:
         for field in list(entity.fields.values()):
             value = None
             if field.FK:
-                value = rnd.choice(localDomains[field.FK.field])
+                value = rnd.choice(localDomains[field.FK.entity])
             else:
                 while not (value := field.getRandomValueFromDomain()):
                     pass
@@ -116,7 +120,7 @@ class EntityFactory:
         localDomains = {}
         for field in list(entity.fields.values()):
             if field.FK and sqls[field.FK.entity]:
-                localDomains[field.FK.field] = [entity[field.FK.field] for entity in sqls[field.FK.entity]]
+                localDomains[field.FK.entity] = [entity[field.FK.field] for entity in sqls[field.FK.entity]]
         return [self.generateInsert(entity,localDomains) for _ in range(number)]
         
     def generateData(self, entities: dict[str, Entity], numbers:dict[str,int]={}):

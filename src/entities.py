@@ -234,7 +234,7 @@ microreactor_type = Entity("microreactor_type", {
     "name":
     Field(
         name="name",
-        type=FieldType.INTEGER,
+        type=FieldType.VARCHAR,
         domain=Domain.MICROREACTOR,
         isPK=False,
         mayBeNull=False,
@@ -310,12 +310,11 @@ microreactor_in_spaceship = Entity("microreactor_in_spaceship", {
     "deploy_date":
     Field(
         name="deploy_date",
-        type=FieldType.INTEGER,
-        domain=Domain.INDEX,
+        type=FieldType.TIMESTAMP,
+        domain=Domain.DATE_INSTALL,
         isPK=False,
         mayBeNull=False,
         condition=lambda: True,
-        FK=None
     ),
 })
 post = Entity("post", {
