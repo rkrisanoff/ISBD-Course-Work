@@ -1,0 +1,142 @@
+#!/usr/bin/bash
+
+user_flag=''
+database_flag=''
+host_flag=''
+user='s284712'
+database='ifmo'
+workingDir='.'
+host='pg'
+
+drop_flag='true'
+init_flag='true'
+function_flag=''
+trigger_flag=''
+indexes_flag=''
+insert_flag='true'
+
+print_usage() {
+    echo "Usage: $0
+                -U user
+                -d database name
+                -h host (pg in helios)
+                -D working-dir (where logs and sqls placed)
+                -g generate new data (without args)
+                -r specify what script must do 
+                    d - drop database
+                    c - init database
+                    f - added functions into database
+                    t - added triggers into database
+                    x - added indexes into database
+                    i - insert data into database
+                    example: -r dc"
+}
+
+while getopts 'U:d:D:h:r:g' flag; do
+    case "${flag}" in
+    U)
+        user_flag='true'
+        user="${OPTARG}"
+        ;;
+    d)
+        database_flag='true'
+        database="${OPTARG}"
+        ;;
+    D)
+        workingDir="${OPTARG}"
+        ;;
+    h)
+        host_flag='true'
+        host="${OPTARG}"
+        ;;
+    g)
+        generate_flag='true'
+        ;;
+    r)
+        rules="${OPTARG}"
+        if [[ ! "${rules}" =~ [dcftxi] ]]; then
+            echo "your rules is wrong"
+            print_usage
+            exit 1
+        else
+            drop_flag=''
+            init_flag=''
+            function_flag=''
+            trigger_flag=''
+            indexes_flag=''
+            insert_flag=''
+        fi
+        if [[ "${rules}" =~ 'd' ]]; then
+            drop_flag='true'
+        fi
+        if [[ "${rules}" =~ 'c' ]]; then
+            init_flag='true'
+        fi
+        if [[ "${rules}" =~ 'f' ]]; then
+            function_flag='true'
+        fi
+        if [[ "${rules}" =~ 't' ]]; then
+            trigger_flag='true'
+        fi
+        if [[ "${rules}" =~ 'x' ]]; then
+            indexes_flag='true'
+        fi
+        if [[ "${rules}" =~ 'i' ]]; then
+            insert_flag='true'
+        fi
+        ;;
+    *)
+        print_usage
+        exit 1
+        ;;
+    esac
+done
+
+if [ "${generate_flag}" = 'true' ]; then
+    "${workingDir}"/src/generate.py >"${workingDir}"/sqls/insert.sql 2>"${workingDir}"/logs/generate_errors.log
+fi
+
+if [ -d "${workingDir}"/logs ]; then
+    rm -rf "${workingDir}"/logs
+fi
+
+mkdir "${workingDir}"/logs
+mkdir "${workingDir}"/logs/errors
+
+# database connectiog
+psqlOpt=''
+
+if [ "${user_flag}" = 'true' ]; then
+    psqlOpt="${psqlOpt} -U ${user}"
+fi
+
+if [ "${database_flag}" = 'true' ]; then
+    psqlOpt="${psqlOpt} -d ${database}"
+fi
+
+if [ "${host_flag}" = 'true' ]; then
+    psqlOpt="${psqlOpt} -h ${host}"
+fi
+
+# database rules
+
+if [ "${drop_flag}" = 'true' ]; then
+    psql ${psqlOpt} -a -f "${workingDir}"/sqls/destroy.sql >"${workingDir}"/logs/drop.log 2>"${workingDir}"/logs/errors/drop_errors.log
+fi
+if [ "${init_flag}" = 'true' ]; then
+    psql ${psqlOpt} -a -f "${workingDir}"/sqls/init.sql >"${workingDir}"/logs/init.log 2>"${workingDir}"/logs/errors/init_errors.log
+fi
+if [ "${function_flag}" = 'true' ]; then
+    psql ${psqlOpt} -a -f "${workingDir}"/sqls/functions.sql >"${workingDir}"/logs/functions.log 2>"${workingDir}"/logs/errors/functions_errors.log
+fi
+if [ "${trigger_flag}" = 'true' ]; then
+    psql ${psqlOpt} -a -f "${workingDir}"/sqls/trigger.sql >"${workingDir}"/logs/trigger.log 2>"${workingDir}"/logs/errors/trigger_errors.log
+fi
+if [ "${indexes_flag}" = 'true' ]; then
+    psql ${psqlOpt} -a -f "${workingDir}"/sqls/indexes.sql >"${workingDir}"/logs/indexes.log 2>"${workingDir}"/logs/errors/indexes_errors.log
+fi
+
+if [ "${insert_flag}" = 'true' ]; then
+    psql ${psqlOpt} -a -f "${workingDir}"/sqls/insert.sql >"${workingDir}"/logs/insert.log 2>"${workingDir}"/logs/errors/insert_errors.log
+    grep -v -e "ERROR:  duplicate key value violates unique constraint" -e "already exists" <"${workingDir}/logs/errors/insert_errors.log" >"${workingDir}/logs/errors/insert_errors_without_dublicates.log"
+fi
