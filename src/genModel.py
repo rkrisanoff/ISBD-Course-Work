@@ -123,15 +123,38 @@ class EntityFactory:
                 localDomains[field.FK.entity] = [entity[field.FK.field] for entity in sqls[field.FK.entity]]
         return [self.generateInsert(entity,localDomains) for _ in range(number)]
         
-    def generateData(self, entities: dict[str, Entity], numbers:dict[str,int]={}):
+    def generateData(self, entities: list[Entity],numbers:dict[str,int]={}):
         """
         generate insert-requests data for every entity we sent in {entities}\n
         """
-        requestsValues = {}.fromkeys(entities.keys())
-        for entityName, entity in entities.items():
-            requestsValues[entityName] = self.generateInserts(requestsValues, entity, numbers[entityName])
+        orderedEntities = self.resolveDependencies(entities)
+        requestsValues = {}.fromkeys([entity.name for entity in orderedEntities])
+        for entity in orderedEntities:
+            requestsValues[entity.name] = self.generateInserts(requestsValues, entity, numbers[entity.name])
         return requestsValues
-    def generateSqlRequests(self,entities: dict[str, Entity],numbers:dict[str,int]={}):
+
+    def resolveDependencies(self,entities:dict[str,Entity]) -> list[Entity]:
+        fieldsDependenciesInEntityes:dict[str,set] = {}
+        for entity in entities.values():
+            fieldsDependenciesInEntityes[entity.name] = set()
+            for field in entity.fields.values():
+                if field.FK:
+                 fieldsDependenciesInEntityes[entity.name].add(field.FK.entity)
+        orderedEntityNameList = []
+        orderedEntityNameSet = set()
+        unOrdered = set(fieldsDependenciesInEntityes.keys())
+  
+        while unOrdered:
+            for entityName in unOrdered:
+                if fieldsDependenciesInEntityes[entityName].issubset(orderedEntityNameSet):
+                    orderedEntityNameList.append(entityName)
+                    orderedEntityNameSet.add(entityName)
+                    unOrdered.remove(entityName)
+                    break
+  
+        return [entities[name] for name in orderedEntityNameList]
+            
+    def generateSqlRequests(self,entities: list[Entity],numbers:dict[str,int]={}):
         finalRequst = ""
         for entityName, inserts in self.generateData(entities,numbers).items():
             for insert in inserts:
