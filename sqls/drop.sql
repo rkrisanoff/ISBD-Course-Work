@@ -1,3 +1,9 @@
+DROP INDEX post_employee_idx;
+DROP INDEX post_role_idx;
+DROP INDEX post_department_idx;
+DROP INDEX robot_operator_idx;
+DROP INDEX robot_asteroid_idx;
+DROP INDEX asteroid_distance_idx;
 DROP TABLE "robot" CASCADE;
 DROP TABLE "positronic_brain" CASCADE;
 DROP TABLE "body" CASCADE;
