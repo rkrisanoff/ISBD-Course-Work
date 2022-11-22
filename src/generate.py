@@ -37,4 +37,22 @@ numbers = {
     "post":20,
     "task":10,
 }
-print(ef.generateSqlRequests(entities, numbers))
+
+preDetermine = {
+    "role":[
+        {
+            "id":"1",
+            "name":"'operator'",
+            "salary":"1000",
+            "can_operate_robot":"TRUE"
+        },
+        {
+            "id":"2",
+            "name":"'manager'",
+            "salary":"2500",
+            "can_operate_robot":"FALSE"
+        }
+    ]
+}
+
+print(ef.generateSqlRequests(entities, numbers,preDetermine))
