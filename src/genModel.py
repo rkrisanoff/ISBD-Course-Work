@@ -66,7 +66,7 @@ class Field:
         self.domain = domain
         self.FK = FK
 
-    def getRandomValueFromDomain(self):
+    def randomValueFromDomain(self):
         return self.domain()
 
 
@@ -77,6 +77,13 @@ class Entity:
     def __init__(self, name, fields: dict[str, Field]) -> None:
         self.name = name
         self.fields = fields
+
+class GeneratedEntity:
+    entity:Entity
+    values:dict[str,any]
+
+
+
 
 
 class EntityFactory:
@@ -108,7 +115,7 @@ class EntityFactory:
             if field.FK:
                 value = rnd.choice(localDomains[field.FK.entity])
             else:
-                while not (value := field.getRandomValueFromDomain()):
+                while not (value := field.randomValueFromDomain()):
                     pass
             values[field.name] = field.type.toSql(value)
         return values
@@ -123,14 +130,17 @@ class EntityFactory:
                 localDomains[field.FK.entity] = [entity[field.FK.field] for entity in sqls[field.FK.entity]]
         return [self.generateInsert(entity,localDomains) for _ in range(number)]
         
-    def generateData(self, entities: list[Entity],numbers:dict[str,int]={}):
+    def generateData(self, entities: list[Entity],numbers:dict[str,int],preDetermine:dict[str,list[dict[str]]]={}):
         """
         generate insert-requests data for every entity we sent in {entities}\n
         """
         orderedEntities = self.resolveDependencies(entities)
         requestsValues = {}.fromkeys([entity.name for entity in orderedEntities])
         for entity in orderedEntities:
-            requestsValues[entity.name] = self.generateInserts(requestsValues, entity, numbers[entity.name])
+            if entity.name not in preDetermine:
+                requestsValues[entity.name] = self.generateInserts(requestsValues, entity, numbers[entity.name])
+            else:
+                requestsValues[entity.name] = preDetermine[entity.name]
         return requestsValues
 
     def resolveDependencies(self,entities:dict[str,Entity]) -> list[Entity]:
@@ -154,9 +164,9 @@ class EntityFactory:
   
         return [entities[name] for name in orderedEntityNameList]
             
-    def generateSqlRequests(self,entities: list[Entity],numbers:dict[str,int]={}):
+    def generateSqlRequests(self,entities: list[Entity],numbers:dict[str,int],preDetermine:dict[str,list[dict[str]]]={}):
         finalRequst = ""
-        for entityName, inserts in self.generateData(entities,numbers).items():
+        for entityName, inserts in self.generateData(entities,numbers,preDetermine).items():
             for insert in inserts:
                 finalRequst += self.transormToSql(entityName, insert)
         return finalRequst
