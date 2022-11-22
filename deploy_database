@@ -3,8 +3,8 @@
 user_flag=''
 database_flag=''
 host_flag=''
-user='s284712'
-database='ifmo'
+user=''
+database=''
 workingDir='.'
 host='pg'
 
@@ -130,13 +130,13 @@ if [ "${function_flag}" = 'true' ]; then
     psql ${psqlOpt} -a -f "${workingDir}"/sqls/functions.sql >"${workingDir}"/logs/functions.log 2>"${workingDir}"/logs/errors/functions_errors.log
 fi
 if [ "${trigger_flag}" = 'true' ]; then
-    psql ${psqlOpt} -a -f "${workingDir}"/sqls/trigger.sql >"${workingDir}"/logs/trigger.log 2>"${workingDir}"/logs/errors/trigger_errors.log
+    psql ${psqlOpt} -a -f "${workingDir}"/sqls/triggers.sql >"${workingDir}"/logs/triggers.log 2>"${workingDir}"/logs/errors/triggers_errors.log
 fi
 if [ "${indexes_flag}" = 'true' ]; then
     psql ${psqlOpt} -a -f "${workingDir}"/sqls/indexes.sql >"${workingDir}"/logs/indexes.log 2>"${workingDir}"/logs/errors/indexes_errors.log
 fi
 
 if [ "${insert_flag}" = 'true' ]; then
-    psql ${psqlOpt} -a -f "${workingDir}"/sqls/insert.sql >"${workingDir}"/logs/insert.log 2>"${workingDir}"/logs/errors/insert_errors.log
-    grep -v -e "ERROR:  duplicate key value violates unique constraint" -e "already exists" <"${workingDir}/logs/errors/insert_errors.log" >"${workingDir}/logs/errors/insert_errors_without_dublicates.log"
+    psql ${psqlOpt} -a -f "${workingDir}"/sqls/insert.sql >"${workingDir}"/logs/inserts.log 2>"${workingDir}"/logs/errors/inserts_errors.log
+    grep -v -e "ERROR:  duplicate key value violates unique constraint" -e "already exists" <"${workingDir}/logs/errors/inserts_errors.log" >"${workingDir}/logs/errors/inserts_errors_without_dublicates.log"
 fi
