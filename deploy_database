@@ -22,7 +22,7 @@ print_usage() {
                 -h host (pg in helios)
                 -D working-dir (where logs and sqls placed)
                 -g generate new data (without args)
-                -r specify what script must do 
+                -r specify what script must do
                     d - drop database
                     c - init database
                     f - added functions into database
@@ -121,7 +121,7 @@ fi
 # database rules
 
 if [ "${drop_flag}" = 'true' ]; then
-    psql ${psqlOpt} -a -f "${workingDir}"/sqls/destroy.sql >"${workingDir}"/logs/drop.log 2>"${workingDir}"/logs/errors/drop_errors.log
+    psql ${psqlOpt} -a -f "${workingDir}"/sqls/drop.sql >"${workingDir}"/logs/drop.log 2>"${workingDir}"/logs/errors/drop_errors.log
 fi
 if [ "${init_flag}" = 'true' ]; then
     psql ${psqlOpt} -a -f "${workingDir}"/sqls/init.sql >"${workingDir}"/logs/init.log 2>"${workingDir}"/logs/errors/init_errors.log
@@ -137,6 +137,6 @@ if [ "${indexes_flag}" = 'true' ]; then
 fi
 
 if [ "${insert_flag}" = 'true' ]; then
-    psql ${psqlOpt} -a -f "${workingDir}"/sqls/insert.sql >"${workingDir}"/logs/inserts.log 2>"${workingDir}"/logs/errors/inserts_errors.log
+    psql ${psqlOpt} -a -f "${workingDir}"/sqls/inserts.sql >"${workingDir}"/logs/inserts.log 2>"${workingDir}"/logs/errors/inserts_errors.log
     grep -v -e "ERROR:  duplicate key value violates unique constraint" -e "already exists" <"${workingDir}/logs/errors/inserts_errors.log" >"${workingDir}/logs/errors/inserts_errors_without_dublicates.log"
 fi
