@@ -1,10 +1,10 @@
 CREATE TABLE "robot" (
   "id" serial PRIMARY KEY,
   "brain_series" integer,
-  "operator_id" integer,
-  "body_series" integer,
-  "eye_series" integer,
-  "hit_points" integer,
+  "operator_id" integer ,
+  "body_series" integer NOT NULL,
+  "eye_series" integer NOT NULL,
+  "hit_points" integer NOT NULL  CHECK ("hit_points" > 0),
   "asteroid_id" integer
 );
 
@@ -12,20 +12,20 @@ CREATE TABLE "positronic_brain" (
   "release_series" serial PRIMARY KEY,
   "name" varchar(255) NOT NULL,
   "speed" int NOT NULL,
-  "cost" int NOT NULL
+  "cost" int NOT NULL CHECK ("cost" > 0)
 );
 
 CREATE TABLE "body" (
   "release_series" serial PRIMARY KEY,
   "name" varchar(255),
-  "max_hit_points" integer,
-  "cost" int NOT NULL
+  "max_hit_points" integer CHECK ("max_hit_points" > 0),
+  "cost" int NOT NULL CHECK ("cost" > 0)
 );
 
 CREATE TABLE "eyes_sensors" (
   "release_series" serial PRIMARY KEY,
   "name" varchar(255),
-  "distance" int,
+  "distance" int CHECK ("distance" >= 0),
   "cost" int NOT NULL
 );
 
@@ -35,13 +35,13 @@ CREATE TABLE "task" (
   "state" varchar(255),
   "creator_post_id" integer,
   "executor_post_id" integer,
-  "cost" integer NOT NULL
+  "cost" integer NOT NULL CHECK ("cost" >= 0)
 );
 
 CREATE TABLE "role" (
   "id" serial PRIMARY KEY,
   "name" varchar(255) NOT NULL,
-  "salary" int NOT NULL,
+  "salary" int NOT NULL CHECK ("salary" >= 0),
   "can_operate_robot" boolean NOT NULL
 );
 
@@ -49,29 +49,29 @@ CREATE TABLE "employee" (
   "id" serial PRIMARY KEY,
   "name" varchar(255),
   "age" integer,
-  "gender" varchar(6)
+  "gender" varchar(6) CHECK ("gender" = 'male' OR "gender" = 'female')
 );
 
 CREATE TABLE "asteroid" (
   "id" serial PRIMARY KEY,
-  "name" varchar(255),
-  "distance" integer
+  "name" varchar(255), 
+  "distance" integer CHECK ("distance" > 0)
 );
 
 CREATE TABLE "deposit" (
   "id" serial PRIMARY KEY,
-  "asteroid_id" integer,
-  "bor_quantity" integer NOT NULL
+  "asteroid_id" integer NOT NULL,
+  "bor_quantity" integer NOT NULL  CHECK ("bor_quantity" > 0)
 );
 
 CREATE TABLE "microreactor_type" (
   "id" serial PRIMARY KEY,
   "name" varchar(255) NOT NULL,
-  "b2_h6_consumption_rate" integer NOT NULL,
-  "b5_h12_consumption_rate" integer NOT NULL,
-  "b10_h14_consumption_rate" integer NOT NULL,
-  "b12_h12_consumption_rate" integer NOT NULL,
-  "cost" integer NOT NULL
+  "b2_h6_consumption_rate" integer NOT NULL CHECK ("b2_h6_consumption_rate" >= 0),
+  "b5_h12_consumption_rate" integer NOT NULL CHECK ("b5_h12_consumption_rate" >= 0),
+  "b10_h14_consumption_rate" integer NOT NULL CHECK ("b10_h14_consumption_rate" >= 0),
+  "b12_h12_consumption_rate" integer NOT NULL CHECK ("b12_h12_consumption_rate" >= 0),
+  "cost" integer NOT NULL CHECK ("cost" >= 0)
 );
 
 CREATE TABLE "microreactor_in_spaceship" (
@@ -83,26 +83,26 @@ CREATE TABLE "microreactor_in_spaceship" (
 
 CREATE TABLE "spaceship" (
   "id" serial PRIMARY KEY,
-  "b2_h6_quantity" integer NOT NULL,
-  "b5_h12_quantity" integer NOT NULL,
-  "b10_h14_quantity" integer NOT NULL,
-  "b12_h12_quantity" integer NOT NULL,
+  "b2_h6_quantity" integer NOT NULL CHECK("b2_h6_quantity">=0),
+  "b5_h12_quantity" integer NOT NULL CHECK("b5_h12_quantity">=0),
+  "b10_h14_quantity" integer NOT NULL CHECK("b10_h14_quantity">=0),
+  "b12_h12_quantity" integer NOT NULL CHECK("b12_h12_quantity">=0),
   "department_id" integer NOT NULL,
-  "income" integer NOT NULL
+  "income" integer NOT NULL CHECK("income" >= 0)
 );
 
 CREATE TABLE "post" (
   "id" serial PRIMARY KEY,
-  "employee_id" integer,
-  "role_id" integer,
-  "department_id" integer,
-  "premium" integer NOT NULL
+  "employee_id" integer NOT NULL,
+  "role_id" integer NOT NULL,
+  "department_id" integer NOT NULL,
+  "premium" integer NOT NULL CHECK("premium" >= 0)
 );
 
 CREATE TABLE "department" (
   "id" serial PRIMARY KEY,
-  "extracted_bor_quantity" integer NOT NULL,
-  "current_resource" integer NOT NULL
+  "extracted_bor_quantity" integer NOT NULL CHECK("extracted_bor_quantity" >= 0),
+  "current_resource" integer NOT NULL CHECK("current_resource" >= 0)
 );
 
 ALTER TABLE "robot" ADD FOREIGN KEY ("brain_series") REFERENCES "positronic_brain" ("release_series");
