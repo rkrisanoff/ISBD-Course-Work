@@ -393,3 +393,122 @@ OR REPLACE FUNCTION update_bor_quantity() RETURNS TRIGGER AS $$
 	RETURN NEW;
 end;
 $$ LANGUAGE plpgsql;
+
+
+
+CREATE
+OR REPLACE FUNCTION complete_task(task_id integer) RETURNS integer AS $$ begin
+	RETURNS NULL ON NULL INPUT;
+	UPDATE 
+	task
+	SET
+	state = 'complete'
+	WHERE
+	task.id = task_id;
+	RETURN 0;
+end;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE
+OR REPLACE FUNCTION send_robot() RETURNS TRIGGER AS $$ begin
+	if (NEW.asteroid_id IS NOT NULL) then
+		UPDATE
+		robot
+		SET
+		NEW.hit_points = OLD.hit_points - 0.05 * (
+			SELECT
+			distance
+			FROM
+			asteroid
+			WHERE
+			asteroid.id = NEW.asteroid_id
+		);
+	else
+		UPDATE
+		robot
+		SET
+		NEW.hit_points = OLD.hit_points - 0.05 * (
+			SELECT
+			distance
+			FROM
+			asteroid
+			WHERE
+			asteroid.id = OLD.asteroid_id
+		);
+	end if;	
+
+	if (
+		NEW.hit_points <= 0
+	) then
+		DELETE FROM
+		robot
+		WHERE 
+		robot.id = NEW.id;
+	end if;
+
+	RETURN NEW;
+end;
+$$ LANGUAGE plpgsql;
+
+
+
+
+CREATE
+OR REPLACE FUNCTION create_task(description_param varchar, state_param varchar, creator_id integer, executor_id integer, cost_param integer) RETURNS integer AS $$ begin
+	RETURNS NULL ON NULL INPUT;
+	
+	INSERT INTO
+	task (description, state, creator_post_id, executor_post_id, cost)
+	VALUES
+	(description_param, state_param, creator_id, executor_id, cost_param);
+	RETURN 0;
+end;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE
+OR REPLACE FUNCTION take_task(task_id integer, post_id integer) RETURNS integer AS $$ begin
+	RETURNS NULL ON NULL INPUT;
+
+	UPDATE
+	task
+	SET
+	executor_post_id = post_id
+	WHERE
+	task.id = task_id;	
+	RETURN 0;
+end;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE
+OR REPLACE FUNCTION extracting_damage(robot_id integer) RETURNS integer AS $$ begin
+	RETURNS NULL ON NULL INPUT;
+
+	UPDATE
+	robot
+	SET
+	robot.hit_points = robot.hit_points - 3
+	WHERE
+	robot.id = robot_id;
+
+	if (
+		SELECT
+		robot.hit_points
+		FROM
+		robot
+		WHERE
+		robot.id = robot_id
+	) <= 0 then
+		DELETE FROM
+		robot
+		WHERE
+		robot.id = robot_id;
+
+	RETURN 0;
+end;
+$$ LANGUAGE plpgsql;
