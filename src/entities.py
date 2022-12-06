@@ -119,7 +119,7 @@ asteroid = Entity("asteroid", {
     Field(
         name="distance",
         type=FieldType.INTEGER,
-        domain=Domain.NONEGATIVE_INTEGER,
+        domain=Domain.DISTANCE,
         isPK=False,
         mayBeNull=False,
         condition=lambda: True,
@@ -499,7 +499,7 @@ robot = Entity("robot",
                    Field(
                        name="hit_points",
                        type=FieldType.INTEGER,
-                       domain=Domain.NONEGATIVE_INTEGER,
+                       domain=Domain.HIT_POINTS,
                        isPK=False,
                        mayBeNull=False,
                        condition=lambda: True,
@@ -542,7 +542,7 @@ body = Entity("body",
                               Field(
                                   name="max_hit_points",
                                   type=FieldType.INTEGER,
-                                  domain=Domain.NONEGATIVE_INTEGER,
+                                  domain=Domain.HIT_POINTS,
                                   isPK=False,
                                   mayBeNull=False,
                                   condition=lambda: True

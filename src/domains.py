@@ -53,7 +53,6 @@ TaskStates = [
     "complete"
 ]
 
-
 Asteroid = ["Ceres", "Pallas", "Juno", "Vesta",
             "Astraea", "Hebe", "Iris", "Flora", "Metis"]
 Microreactor = ['MK1', 'MK2', 'MK3', 'MK4', 'MK5', 'MK6']
@@ -78,6 +77,8 @@ class Domain(Enum):
     def NONEGATIVE_INTEGER(): return rnd.randint(0, 20000)
     def NATURAL(): return rnd.randint(1, 1000)
     def POSITRONIC_BRAIN(): return rnd.choice(PositronicBrain)
+    def HIT_POINTS():return 100+rnd.randint(1, 1900)
+    def DISTANCE():return rnd.randint(1, 50000)
     def ASTEROID(): return rnd.choice(Asteroid)
     def MICROREACTOR(): return rnd.choice(Microreactor)
     def ROLE_NAMES(): return rnd.choice(RoleNames)
