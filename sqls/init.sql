@@ -93,10 +93,11 @@ CREATE TABLE "spaceship" (
 
 CREATE TABLE "post" (
   "id" serial PRIMARY KEY,
-  "employee_id" integer NOT NULL,
+  "employee_id" integer NOT NULL ,
   "role_id" integer NOT NULL,
   "department_id" integer NOT NULL,
-  "premium" integer NOT NULL CHECK("premium" >= 0)
+  "premium" integer NOT NULL CHECK("premium" >= 0),
+  UNIQUE("employee_id","role_id","department_id")
 );
 
 CREATE TABLE "department" (
