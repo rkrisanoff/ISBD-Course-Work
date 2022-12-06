@@ -22,34 +22,53 @@ entities = {
     "task":entities.task,
 }
 numbers = {
-    "positronic_brain": 5,
-    "body": 5,
-    "eyes_sensors":5,
-    "department": 5,
-    "employee":20,
-    "asteroid": 10,
-    "deposit":20,
-    "robot": 30,
-    "microreactor_type": 4,
-    "spaceship": 15,
-    "microreactor_in_spaceship": 30,
-    "role":2,
-    "post":20,
-    "task":10,
+    "positronic_brain": 50,
+    "body": 50,
+    "eyes_sensors":50,
+    "department": 50,
+    "employee":700,
+    "asteroid": 1000,
+    "deposit":500,
+    "robot": 1000,
+    "microreactor_type": 10,
+    "spaceship": 100,
+    "microreactor_in_spaceship": 500,
+    "role":4,
+    "post":2000,
+    "task":1000,
 }
+"""
+Create table ROLE(
+    id 
+    major_name [manager,cleaner,operator,programmer,motherfucker,vovkakiller2005]
+    minor_name [intern,junior,middle,senior,tear-lead,top]
+)
+"""
 
 preDetermine = {
     "role":[
-        {
+                {
             "id":"1",
+            "name":"'intern-operator'",
+            "salary":"250",
+            "can_operate_robot":"TRUE"
+        },
+        {
+            "id":"2",
             "name":"'operator'",
             "salary":"1000",
             "can_operate_robot":"TRUE"
         },
         {
-            "id":"2",
+            "id":"3",
             "name":"'manager'",
             "salary":"2500",
+            "can_operate_robot":"FALSE"
+        },
+                {
+            "id":"4",
+            "name":"'top-manager'",
+            "salary":"12500",
             "can_operate_robot":"FALSE"
         }
     ]
