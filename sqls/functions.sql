@@ -6,14 +6,14 @@ OR REPLACE FUNCTION limit_robot_hitpoints() RETURNS TRIGGER AS $$ begin if (
     select
         max_hit_points
     from
-        "body"
+        body
     where
         release_series = NEW.body_series
 ) then NEW.hit_points = (
     select
         max_hit_points
     from
-        "body"
+        body
     where
         release_series = NEW.body_series
 );
@@ -107,7 +107,7 @@ OR REPLACE FUNCTION update_robots_brain_pay() RETURNS TRIGGER AS $$ begin
 			FROM
 			positronic_brain
 			WHERE
-			NEW.brain_series = positronic_brain.release_series
+			positronic_brain.release_series = NEW.brain_series
 		)
 		WHERE
 		department.id IN (
@@ -115,8 +115,7 @@ OR REPLACE FUNCTION update_robots_brain_pay() RETURNS TRIGGER AS $$ begin
 			department.id
 			FROM
 			robot
-			JOIN employee ON robot.operator_id = employee.id
-			JOIN post ON post.employee_id = employee.id
+			JOIN post ON post.operator_post_id = post.id and robot.id = NEW.id
 			JOIN role ON role.id = post.role_id AND role.can_operate_robot
 			JOIN department ON department.id = post.department_id
 		);
@@ -145,7 +144,7 @@ OR REPLACE FUNCTION update_robots_eyes_pay() RETURNS TRIGGER AS $$ begin
 			FROM
 			eyes_sensors
 			WHERE
-			NEW.eye_series = eyes_sensors.release_series
+			eyes_sensors.release_series = NEW.eye_series
 		)
 		WHERE
 		department.id IN (
@@ -153,8 +152,7 @@ OR REPLACE FUNCTION update_robots_eyes_pay() RETURNS TRIGGER AS $$ begin
 			department.id
 			FROM
 			robot
-			JOIN employee ON robot.operator_id = employee.id
-			JOIN post ON post.employee_id = employee.id
+			JOIN post ON post.operator_post_id = post.id and robot.id = NEW.id
 			JOIN role ON role.id = post.role_id AND role.can_operate_robot
 			JOIN department ON department.id = post.department_id
 		);
@@ -177,7 +175,7 @@ OR REPLACE FUNCTION update_robots_body_pay() RETURNS TRIGGER AS $$ begin
 			FROM
 			body
 			WHERE
-			NEW.body_series = body.release_series
+      body.release_series = NEW.body_series 
 		)
 		WHERE
 		department.id IN (
@@ -185,8 +183,7 @@ OR REPLACE FUNCTION update_robots_body_pay() RETURNS TRIGGER AS $$ begin
 			department.id
 			FROM
 			robot
-			JOIN employee ON robot.operator_id = employee.id
-			JOIN post ON post.employee_id = employee.id
+			JOIN post ON post.operator_post_id = post.id and robot.id = NEW.id
 			JOIN role ON role.id = post.role_id AND role.can_operate_robot
 			JOIN department ON department.id = post.department_id
 		);
@@ -210,10 +207,9 @@ OR REPLACE FUNCTION update_robots_hp_pay() RETURNS TRIGGER AS $$ begin
 			department.id
 			FROM
 			robot
-			JOIN employee ON robot.operator_id = employee.id
-			JOIN post ON post.employee_id = employee.id
-			JOIN role ON role.id = post.role_id AND role.can_operate_robot
-			JOIN department ON department.id = post.department_id
+      JOIN post on robot.operator_post_id = post.id and robot.id = NEW.id
+      JOIN role on role.id = post.role_id and role.can_operate_robot
+			JOIN deparmtent on department.id = post.department_id
 		);
 	end if;
 	RETURN NEW;
@@ -232,7 +228,7 @@ OR REPLACE FUNCTION update_spaceship_microreactor_pay() RETURNS TRIGGER AS $$ be
 			cost
 			FROM
 			microreactor_type
-			JOIN microreactor_in_spaceship ON microreactor_type_id = NEW.id
+			JOIN microreactor_in_spaceship ON NEW.microreactor_type_id = microreactor_type.id
 		)
 		WHERE
 		department.id = (
@@ -241,7 +237,7 @@ OR REPLACE FUNCTION update_spaceship_microreactor_pay() RETURNS TRIGGER AS $$ be
 			FROM
 			department
 			JOIN spaceship ON department.id = spaceship.department_id
-			JOIN microreactor_in_spacechip ON microreactor_in_spaceship.spaceship_id = spaceship.id
+			JOIN microreactor_in_spacechip ON NEW.spaceship_id = spaceship.id
 		);
 	end if;
 	RETURN NEW;
