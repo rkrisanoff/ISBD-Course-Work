@@ -40,7 +40,7 @@ BEFORE UPDATE
 
 
 CREATE TRIGGER update_spaceship_microreactor_pay_t
-BEFORE INSERT OR UPDATE
+AFTER INSERT OR UPDATE
     ON microreactor_in_spaceship FOR EACH ROW EXECUTE PROCEDURE "update_spaceship_microreactor_pay"();
 
 
@@ -50,5 +50,5 @@ BEFORE INSERT OR UPDATE
 
 
 CREATE TRIGGER update_bor_quantity_t
-BEFORE UPDATE
+AFTER UPDATE
     ON spaceship FOR EACH ROW EXECUTE PROCEDURE "update_bor_quantity"();
