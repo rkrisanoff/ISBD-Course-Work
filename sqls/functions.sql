@@ -1,3 +1,4 @@
+set search_path to 's284712';
 CREATE
 OR REPLACE FUNCTION limit_robot_hitpoints() RETURNS TRIGGER AS $$ begin if (
     select
@@ -71,6 +72,7 @@ then
 else
 	return NEW;
 end if;
+return NEW;
 end;
 $$ LANGUAGE plpgsql;
 
@@ -115,7 +117,7 @@ OR REPLACE FUNCTION update_robots_brain_pay() RETURNS TRIGGER AS $$ begin
 			department.id
 			FROM
 			robot
-			JOIN post ON post.operator_post_id = post.id and robot.id = NEW.id
+			JOIN post ON robot.operator_post_id = post.id and robot.id = NEW.id
 			JOIN role ON role.id = post.role_id AND role.can_operate_robot
 			JOIN department ON department.id = post.department_id
 		);
@@ -152,7 +154,7 @@ OR REPLACE FUNCTION update_robots_eyes_pay() RETURNS TRIGGER AS $$ begin
 			department.id
 			FROM
 			robot
-			JOIN post ON post.operator_post_id = post.id and robot.id = NEW.id
+			JOIN post ON robot.operator_post_id = post.id and robot.id = NEW.id
 			JOIN role ON role.id = post.role_id AND role.can_operate_robot
 			JOIN department ON department.id = post.department_id
 		);
@@ -183,7 +185,7 @@ OR REPLACE FUNCTION update_robots_body_pay() RETURNS TRIGGER AS $$ begin
 			department.id
 			FROM
 			robot
-			JOIN post ON post.operator_post_id = post.id and robot.id = NEW.id
+			JOIN post ON robot.operator_post_id = post.id and robot.id = NEW.id
 			JOIN role ON role.id = post.role_id AND role.can_operate_robot
 			JOIN department ON department.id = post.department_id
 		);
@@ -394,7 +396,6 @@ $$ LANGUAGE plpgsql;
 
 CREATE
 OR REPLACE FUNCTION complete_task(task_id integer) RETURNS integer AS $$ begin
-	RETURNS NULL ON NULL INPUT;
 	UPDATE 
 	task
 	SET
@@ -453,7 +454,6 @@ $$ LANGUAGE plpgsql;
 
 CREATE
 OR REPLACE FUNCTION create_task(description_param varchar, state_param varchar, creator_id integer, executor_id integer, cost_param integer) RETURNS integer AS $$ begin
-	RETURNS NULL ON NULL INPUT;
 	
 	INSERT INTO
 	task (description, state, creator_post_id, executor_post_id, cost)
@@ -467,7 +467,6 @@ $$ LANGUAGE plpgsql;
 
 CREATE
 OR REPLACE FUNCTION take_task(task_id integer, post_id integer) RETURNS integer AS $$ begin
-	RETURNS NULL ON NULL INPUT;
 
 	UPDATE
 	task
@@ -483,7 +482,6 @@ $$ LANGUAGE plpgsql;
 
 CREATE
 OR REPLACE FUNCTION extracting_damage(robot_id integer) RETURNS integer AS $$ begin
-	RETURNS NULL ON NULL INPUT;
 
 	UPDATE
 	robot
