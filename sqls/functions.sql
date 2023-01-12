@@ -211,7 +211,7 @@ OR REPLACE FUNCTION update_robots_hp_pay() RETURNS TRIGGER AS $$ begin
 			robot
       JOIN post on robot.operator_post_id = post.id and robot.id = NEW.id
       JOIN role on role.id = post.role_id and role.can_operate_robot
-			JOIN departent on department.id = post.department_id
+			JOIN department on department.id = post.department_id
 		);
 	end if;
 	RETURN NEW;
