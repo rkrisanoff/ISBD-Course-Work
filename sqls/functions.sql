@@ -85,7 +85,7 @@ OR REPLACE FUNCTION body_creation_reward() RETURNS TRIGGER AS $$ begin
 		SELECT
 		NEW.cost
 	);
-
+RETURN NEW;
 end;
 $$ LANGUAGE plpgsql;
 
