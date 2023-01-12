@@ -385,7 +385,7 @@ OR REPLACE FUNCTION update_bor_quantity() RETURNS TRIGGER AS $$
 			DELETE FROM
 			spaceship
 			WHERE
-			spacehip.id = NEW.id;
+			spaceship.id = NEW.id;
 		END IF;
 	END LOOP;
 	RETURN NEW;
