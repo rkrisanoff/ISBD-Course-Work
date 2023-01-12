@@ -41,7 +41,7 @@ BEFORE UPDATE
 
 CREATE TRIGGER update_spaceship_microreactor_pay_t
 BEFORE INSERT OR UPDATE
-    ON microreactor_type FOR EACH ROW EXECUTE PROCEDURE "update_spaceship_microreactor_pay"();
+    ON microreactor_in_spaceship FOR EACH ROW EXECUTE PROCEDURE "update_spaceship_microreactor_pay"();
 
 
 CREATE TRIGGER update_task_reward_t
