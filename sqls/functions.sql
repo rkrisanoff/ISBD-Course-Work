@@ -211,7 +211,7 @@ OR REPLACE FUNCTION update_robots_hp_pay() RETURNS TRIGGER AS $$ begin
 			robot
       JOIN post on robot.operator_post_id = post.id and robot.id = NEW.id
       JOIN role on role.id = post.role_id and role.can_operate_robot
-			JOIN deparmtent on department.id = post.department_id
+			JOIN departent on department.id = post.department_id
 		);
 	end if;
 	RETURN NEW;
@@ -502,7 +502,7 @@ OR REPLACE FUNCTION extracting_damage(robot_id integer) RETURNS integer AS $$ be
 		robot
 		WHERE
 		robot.id = robot_id;
-
+  end if;
 	RETURN 0;
 end;
 $$ LANGUAGE plpgsql;
