@@ -250,7 +250,7 @@ $$ LANGUAGE plpgsql;
 
 CREATE
 OR REPLACE FUNCTION update_task_reward() RETURNS TRIGGER AS $$ begin
-	if (NEW.state == 'complete')
+	if (NEW.state = 'complete')
 	then
 		UPDATE 
 		department
